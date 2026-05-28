@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salesforce Admin Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LANDING SCREEN
+═══════════════════════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-card">
+
+    <div class="landing-header">
+      <div class="landing-logo">
+        <div class="logo-icon">☁</div>
+        <span class="logo-text">Salesforce Admin Assessment</span>
+      </div>
+      <p class="landing-subtitle">Certification Readiness Evaluation</p>
+      <div class="landing-meta">
+        <span class="meta-pill">45 Minutes</span>
+        <span class="meta-pill">20 Questions</span>
+        <span class="meta-pill">Auto-Graded MCQ</span>
+      </div>
+    </div>
+
+    <div class="landing-info-strip">
+      <div class="info-strip-grid">
+        <div class="info-strip-item">
+          <span class="count">10</span>
+          <span class="label">Scenario</span>
+        </div>
+        <div class="info-strip-item">
+          <span class="count">5</span>
+          <span class="label">Live Coding</span>
+        </div>
+        <div class="info-strip-item">
+          <span class="count">5</span>
+          <span class="label">MCQ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-form">
+      <p class="form-title">Candidate Registration</p>
+
+      <div class="field-group">
+        <label for="inName">Full Name</label>
+        <input type="text" id="inName" placeholder="Enter your full name" autocomplete="name"/>
+      </div>
+
+      <div class="field-group">
+        <label for="inEmail">Email Address</label>
+        <input type="email" id="inEmail" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+
+      <div class="field-group">
+        <label for="inBatch">Batch ID</label>
+        <input type="text" id="inBatch" placeholder="e.g. SF-2025-A"/>
+      </div>
+
+      <div class="field-group">
+        <label for="inRole">Role</label>
+        <select id="inRole">
+          <option value="">— Select your role —</option>
+          <option>Salesforce Admin</option>
+          <option>Salesforce Developer</option>
+          <option>Salesforce Consultant</option>
+          <option>Business Analyst</option>
+          <option>Student / Fresher</option>
+        </select>
+      </div>
+
+      <button class="btn-launch" onclick="startQuiz()">Begin Assessment</button>
+      <p class="err-msg" id="errMsg"></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     QUIZ SCREEN
+═══════════════════════════════════════════════════════════════ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">☁</div>
+        <div>
+          <div class="sidebar-brand-text">SF Assessment</div>
+          <div class="sidebar-brand-sub">Admin Certification</div>
+        </div>
+      </div>
+
+      <div class="info-chip">
+        <span class="chip-label">Candidate</span>
+        <span class="chip-val" id="sidebarName">—</span>
+      </div>
+
+      <div class="info-chip">
+        <span class="chip-label">Batch</span>
+        <span class="chip-val" id="sidebarBatch">—</span>
+      </div>
+
+      <div class="info-chip timer-chip">
+        <span class="chip-label">Time Remaining</span>
+        <span class="chip-val timer-val" id="sidebarTimer">45:00</span>
+      </div>
+
+      <div class="q-map-label">Question Map</div>
+      <div class="q-map" id="qMap"></div>
+
+      <div class="legend">
+        <div class="leg-item"><span class="leg-dot leg-answered"></span>Answered</div>
+        <div class="leg-item"><span class="leg-dot leg-current"></span>Current</div>
+        <div class="leg-item"><span class="leg-dot leg-blank"></span>Unanswered</div>
+      </div>
+
+      <button class="btn-final-submit" onclick="finalSubmit()">Submit Assessment</button>
+    </aside>
+
+    <!-- MAIN PANEL -->
+    <main class="quiz-main">
+      <div class="qcard" id="qcard">
+
+        <div class="qcard-top">
+          <div class="q-meta-left">
+            <span class="q-type-badge badge-scenario" id="qTypeBadge">Scenario</span>
+            <span class="q-num" id="qNum">Q01 / 20</span>
+          </div>
+          <div class="q-category-tag" id="qCatTag">Category</div>
+        </div>
+
+        <div class="scenario-box" id="scenarioBox">
+          <div class="scenario-header">
+            <span class="scenario-icon">🏢</span>
+            <span class="scenario-label" id="scenarioLabel">SCENARIO</span>
+          </div>
+          <p class="scenario-text" id="scenarioText"></p>
+        </div>
+
+        <h2 class="q-text" id="qText"></h2>
+
+        <div id="answerArea"></div>
+
+        <div class="qcard-nav">
+          <button class="btn-qnav btn-prev" id="btnPrev" onclick="goTo(currentIdx - 1)">← Previous</button>
+          <span class="q-progress-text" id="qProgressText"></span>
+          <button class="btn-qnav btn-next" id="btnNext" onclick="goTo(currentIdx + 1)">Next →</button>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     RESULT SCREEN
+═══════════════════════════════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <div class="result-card">
+
+    <div class="result-header">
+      <div class="result-header-title">Assessment Complete</div>
+      <div class="result-header-sub">Salesforce Admin Certification Evaluation</div>
+    </div>
+
+    <div class="result-status-banner pass" id="resultBanner">
+      Assessment Submitted Successfully
+    </div>
+
+    <div class="result-body">
+
+      <div class="result-grid">
+        <div class="res-stat">
+          <span class="rs-label">Candidate</span>
+          <span class="rs-val" id="rName">—</span>
+        </div>
+        <div class="res-stat">
+          <span class="rs-label">Batch</span>
+          <span class="rs-val" id="rBatch">—</span>
+        </div>
+        <div class="res-stat">
+          <span class="rs-label">MCQ Score</span>
+          <span class="rs-val" id="rMcq">—</span>
+        </div>
+        <div class="res-stat">
+          <span class="rs-label">Time Taken</span>
+          <span class="rs-val" id="rTime">—</span>
+        </div>
+        <div class="res-stat wide">
+          <span class="rs-label">MCQ Status</span>
+          <span class="rs-val" id="rStatus">—</span>
+        </div>
+      </div>
+
+      <div class="submission-log" id="submissionLog">
+        <div class="sub-line">Packaging responses... <span class="sub-ok">Done</span></div>
+        <div class="sub-line" id="submitLine2">Connecting to Google Sheets... <span class="sub-spin">●</span></div>
+        <div class="sub-line" id="submitLine3" style="display:none;"></div>
+      </div>
+
+      <div class="descriptive-note">
+        📝 <strong>Scenario and Coding answers</strong> have been recorded and will be reviewed separately by your instructor.
+      </div>
+
+      <button class="btn-restart" onclick="retryQuiz()">Restart Assessment</button>
+
+    </div>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="quiz.js"></script>
+</body>
+</html>
