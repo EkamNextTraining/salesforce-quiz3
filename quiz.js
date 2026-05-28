@@ -3,7 +3,7 @@
 //  ✏️  Replace SCRIPT_URL with your Google Apps Script Web App URL
 // =====================================================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlx1-TMkL6Ntfl2ZDK9CwiHfcutEP3nByJ3KxEh9NbI1Sg_aGET2NE_tiKGq-DhDth/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5czUtZX9zvKbpLjFlSmYvGYPYygESNsFcfWTWUaHRg3lurc4rlhHvtmC0U3sP067J/exec";
 
 // ── Session Storage Keys ───────────────────────────────────────────
 const SK = {
